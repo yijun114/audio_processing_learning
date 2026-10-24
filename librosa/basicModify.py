@@ -24,3 +24,11 @@ sf.write('fasterSound.wav', stretched_data, samplerate)
 #pitch_shift同样是沿最后一维处理，也要先转置
 shifted_data = lb.effects.pitch_shift(data.T, sr=samplerate, n_steps=2).T
 sf.write('higherSound.wav', shifted_data, samplerate)
+
+#修剪静音部分
+#trim函数有两个返回值，第一个是处理后的声音形状数组
+#第二个是一个二元素数组index，其标记的是"保留的这段音频，对应原数组的第几个采样点到第几个采样点"
+#下划线“_”是python的语法，表示一个普通变量，其中的含义是“我接收这个变量，但我不使用这个变量”
+#由于这个测试音频不存在静音的部分，故而执行后没有变化
+data_trimmed, _ = lb.effects.trim(data.T)
+sf.write('removeMuteSound.wav', data_trimmed.T, samplerate)
